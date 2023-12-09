@@ -1,0 +1,75 @@
+version: "3.9"
+
+networks:
+  my-bridge:
+    external: true
+    driver: bridge
+
+services:
+  eureka-server:
+    container_name: eureka-server
+    image: kawam/eureka-server
+    ports:
+      - 8010:8010
+    networks:
+      - my-bridge
+    restart: on-failure
+    network_mode: bridge
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: task-man-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    networks:
+      - my-bridge
+    network_mode: bridge
+    links:
+      - identity-provider
+
+  identity-provider:
+    container_name: identity-provider
+    image: kawam/tm-identity-provider
+    ports:
+      - 82:8089
+    networks:
+      - my-bridge
+    restart: on-failure
+    network_mode: bridge
+
+  business-db:
+    container_name: business-db
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: task-buss-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    networks:
+      - my-bridge
+    restart: on-failure
+    network_mode: bridge
+
+  task-management:
+    container_name: task-management
+    image: kawam/task-management
+    ports:
+      - 81:8030
+    networks:
+      - my-bridge
+    restart: on-failure
+    network_mode: bridge
+
+  tm-gateway:
+    container_name: tm-gateway
+    image: kawam/tm-gateway
+    ports:
+      - 8080:8080
+    networks:
+      - my-bridge
+    restart: on-failure
+    network_mode: bridge
+

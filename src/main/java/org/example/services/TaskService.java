@@ -35,8 +35,8 @@ public class TaskService {
     public Task createTask(CreateTaskRequest request){
         final Task task = mapper.requestToEntity(request);
         task.setCreatedAt(LocalDate.now());
-        final Person author = personRepository.findById(request.getAuthorId()).orElseThrow(NoSuchElementException::new);
-        final Person performer = personRepository.findById(request.getPerformerId()).orElseThrow(NoSuchElementException::new);
+        final Person author = personRepository.findById(request.getAuthorId()).orElseThrow(() -> new NoSuchElementException("No such person"));
+        final Person performer = personRepository.findById(request.getPerformerId()).orElseThrow(() -> new NoSuchElementException("No such person"));
         final Task save = taskRepository.save(task);
         save.setAuthor(author);
         save.setPerformer(performer);
@@ -44,27 +44,27 @@ public class TaskService {
     }
 
     public Task getTask(Long id){
-        return taskRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such task"));
     }
 
     public Task deleteTask(Long id){
-        final Task task = taskRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        final Task task = taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Task not found"));
         taskValidator.checkOwnership(task);
         taskRepository.deleteById(id);
         return task;
     }
 
     public Task changeStatus(Long id, DescriptionStatus status){
-        final Task task = taskRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        final Task task = taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Task not found"));
         taskValidator.validateUpdateStatus(task);
         task.setStatus(status);
         task.setUpdatedAt(LocalDate.now());
         return taskRepository.save(task);
     }
     public Task assignToPerformer(Long id, Long performerId){
-        final Task task = taskRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        final Task task = taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such task"));
         taskValidator.checkOwnership(task);
-        final Person performer = personRepository.findById(performerId).orElseThrow(NoSuchElementException::new);
+        final Person performer = personRepository.findById(performerId).orElseThrow(() -> new NoSuchElementException("No such person"));
         task.setPerformer(performer);
         return task;
     }
