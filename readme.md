@@ -9,6 +9,7 @@ This repository is only the business logic for the Task Management System which 
 ## Usage
 you only need to run the following command while you are in same directory as the compose.yaml file:
 ```bash
+ docker network create -d bridge my-bridge
  docker compose up
  ```
 ## System Architecture
@@ -23,5 +24,7 @@ which add the user information through the Identity Provider and get the referen
 Api gateway get service's url from Discovery service and redirect the requests to the services. so all requests meant to go to the identity provider should start with "/ip" 
 while all the requests that should go to the business service should start with "/tm".
 
-
-
+## Swagger 
+- springdoc.swagger-ui.path= /api/v1/pub/swagger-ui.html
+- springdoc.api-docs.path= /api/v1/pub/api-docs
+- since the api uses Authorization header for authentication you need first to login and then send the jwt token with all the other requests. and it is recommended to use postman for testing.
