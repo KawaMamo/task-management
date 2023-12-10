@@ -28,3 +28,9 @@ while all the requests that should go to the business service should start with 
 - springdoc.swagger-ui.path= /api/v1/pub/swagger-ui.html
 - springdoc.api-docs.path= /api/v1/pub/api-docs
 - since the api uses Authorization header for authentication you need first to login and then send the jwt token with all the other requests. and it is recommended to use postman for testing.
+
+## Discovery Service
+To check the Instances registered with Eureka:
+```bash
+http://localhost:8010/
+```
