@@ -9,7 +9,8 @@ This repository is only the business logic for the Task Management System which 
 ## Usage
 you only need to run the following command while you are in same directory as the compose.yaml file:
 ```bash
- docker compose up
+docker network create -d bridge my-bridge
+docker compose up
  ```
 ## System Architecture
 Microservices architecture is followed to build the System.
