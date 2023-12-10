@@ -24,5 +24,10 @@ which add the user information through the Identity Provider and get the referen
 Api gateway get service's url from Discovery service and redirect the requests to the services. so all requests meant to go to the identity provider should start with "/ip" 
 while all the requests that should go to the business service should start with "/tm".
 
+## Discovery Service
+To check Instances registered with Eureka go to:
+```bash
+http://localhost:8010/
+```
 
 
